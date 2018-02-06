@@ -37,6 +37,12 @@ To start, change the current working directory to the saved directory of the rep
 If it was succesful, the training should display something along the lines of:
 
 ```
+Loading Data. . .   [DONE]
+
+100 images accepted
+
+0 images were not suitable
+
 ================
 
 Epoch: 1, Loss: 0.9908674, Accuracy: 0.119856
@@ -71,7 +77,7 @@ Through training, the computer is able to recognize patterns in pink eye. Compar
 
 **Image 1, regular eyes** | **Image 2, pink eye**
 :-------------------------|----------------------:
-[Alt text](https://www.github.com/lachibal2/Diagnosing-Pink-Eye-With-CNNs/img/regular_eye.jpg) | [Alt text](https://www.github.com/lachibal2/Diagnosing-Pink-Eye-With-CNNs/img/pink_eye.jpg)
+<img src='https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs/blob/master/img/regular_eye.jpg' width=200 height=200> | <img src='https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs/blob/master/img/pink_eye.jpg' width=200 height=200>
 
 It is easy for us to tell which one has pink eye, and which one does not. The computer, at first, has a little bit of trouble. We must train it to asscosiate certain features of the face(i.e. swollen eyes, red-colored eye, etc.) with pink eye. Simmilar to how we learn, the computer gets better as it sees more examples of pink eye.
 
@@ -91,7 +97,7 @@ Each has their own advantages and disadvantages.
 During training, the biases are adjusted by a process called backpropogation.
 
 ### Backpropagation:
-Invented by Wilfred Hinton, backpropagation, or backprop for short, is a method of finding the difference between the returned result and the expected result and subtly adjusting biases of nodes that contributed to the gap in expected and returned results.
+Invented by Geoffery Hinton, backpropagation, or backprop for short, is a method of finding the difference between the returned result and the expected result and subtly adjusting biases of nodes that contributed to the gap in expected and returned results.
 
 ### Gradient Descent:
 To minimize empirical loss, we want to use a gradient descent optimizer. Empirical loss can be thought of as an approximation for how close the predicted result is to the actual result. We want to minimize this quantity. So, we take a step of some magnitude in a random direction, and we measure the descent or ascent. If we're going up, we want to go the other way. Otherwise, keep going down. The procedure that was just described is a very simple gradient descent algorithm.
