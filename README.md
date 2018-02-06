@@ -1,6 +1,8 @@
 # Diagnosing Pink Eye using Convolutional Neural Networks
 Using Convolutional Neural Networks to diagnose conjunctivitis, or pink eye
 
+Please note, this repo is still a work-in-progress, and is in no way fully operational.
+
 **By: Lachi Balabanski**
 
 ## Background:
