@@ -3,6 +3,8 @@ Using Convolutional Neural Networks to diagnose conjunctivitis, or pink eye
 
 Please note, this repo is still a work-in-progress, and is in no way fully operational.
 
+**By: Lachi Balabanski**
+
 ## Table of Contents:
 
 - [Background](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#background)
@@ -15,7 +17,7 @@ Please note, this repo is still a work-in-progress, and is in no way fully opera
   - [How Does it Diagnose Me?](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#how-does-it-diagnose-me)
 - [CNNs in Depth](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#cnns-in-depth)
   - [The Perceptron](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#the-perceptron)
-  - [Backpropagation](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#backpropogation)
+  - [Backpropagation](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#backpropagation)
   - [Gradient Descent](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#gradient-descent)
   - [Neural Nets](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#neural-nets)
   - [Convolutional Neural Nets](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#convolutional-neural-nets)
@@ -24,8 +26,6 @@ Please note, this repo is still a work-in-progress, and is in no way fully opera
     - [Obvious Equivilents](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#obvious-equivilents)
     - [Processing Power](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#processing-power)
 - [Citations](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#citations)
-
-**By: Lachi Balabanski**
 
 ## Background:
 
