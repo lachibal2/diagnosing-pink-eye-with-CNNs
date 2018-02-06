@@ -119,7 +119,7 @@ There are many gradient descent algorithms, the most popular of which include: M
 The size of the magnitude of the step we took is called the learning rate. The learning rate is important, because if it is set too high or too low, it can get the program stuck in a local minimum for the value of the empirical loss, rather than a global optimum.
 
 ### Neural Nets:
-Neural Nets are called the way they are, because they mimic the human brain, *neural*, and when put in graphical notation, the center appears as though it is a net. 
+Neural Nets are called the way they are, because they mimic the human brain, *neural*, and net is short for network. The network in a neural net is a series of perceptrons linked together.
 
 ![Alt text](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs/blob/master/img/neural_net.jpg) 
 
