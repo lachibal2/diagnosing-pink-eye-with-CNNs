@@ -1,7 +1,31 @@
 # Diagnosing Pink Eye using Convolutional Neural Networks
 Using Convolutional Neural Networks to diagnose conjunctivitis, or pink eye
 
+Please note, this repo is still a work-in-progress, and is in no way fully operational.
+
 **By: Lachi Balabanski**
+
+## Table of Contents:
+
+- [Background](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#background)
+  - [Conjunctivits/Pink Eye](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#conjunctivitispink-eye)
+  - [Convolutional Neural Network(CNN)](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#convolutional-neural-networkcnn)
+  - [Real-life application](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#real-life-application)
+- [Use](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#use)
+  - [Dependencies](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#dependencies)
+  - [Training/Diagnosis](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#trainingdiagnosis)
+  - [How Does it Diagnose Me?](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#how-does-it-diagnose-me)
+- [CNNs in Depth](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#cnns-in-depth)
+  - [The Perceptron](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#the-perceptron)
+  - [Backpropagation](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#backpropagation)
+  - [Gradient Descent](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#gradient-descent)
+  - [Neural Nets](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#neural-nets)
+  - [Convolutional Neural Nets](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#convolutional-neural-nets)
+  - [Neural Networks' Shortcomings](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#neural-networks-shortcomings)
+    - [Overfitting](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#overfitting)
+    - [Obvious Equivilents](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#obvious-equivilents)
+    - [Processing Power](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#processing-power)
+- [Citations](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs#citations)
 
 ## Background:
 
@@ -28,37 +52,33 @@ This program uses numpy and tensorflow, which are not built-in. Be sure to pip i
 ### Training/Diagnosis:
 To start, change the current working directory to the saved directory of the repo. Then, copy and paste all images to be dianosed to the *'to_diagnose'* folder Execute this in the terminal:
 
-`python cnn_main.py -n [names of images]`
+```bash
+$ python cnn_main.py -n [names of images]
+```
 
 *-n* or *--names* expects a comma-seperated list of image names with the extension(*i.e. test1.jpg,test2.jpg,test3.jpg*)
 
 If it was succesful, the training should display something along the lines of:
 
-```
+```text
+Loading Data. . .   [DONE]
+100 images accepted
+0 images were not suitable
 ================
-
 Epoch: 1, Loss: 0.9908674, Accuracy: 0.119856
-
 3% finshed
-
 ================
-
 Epoch: 20, Loss: 0.778223, Accuracy: 0.213785
-
 61% finished
-
 ===============
 ```
 
 Eventually the program should output:
 
-```
+```text
 Optimization is done!
-
 Image 'test1.jpg' has a 2% chance of having pink-eye
-
 Image 'test2.jpg' has a 97% chance of having pink-eye
-
 Image 'test3.jpg' has a 1% chance of having pink-eye
 ```
 
@@ -69,7 +89,7 @@ Through training, the computer is able to recognize patterns in pink eye. Compar
 
 **Image 1, regular eyes** | **Image 2, pink eye**
 :-------------------------|----------------------:
-[Alt text](https://www.github.com/lachibal2/Diagnosing-Pink-Eye-With-CNNs/img/regular_eye.jpg) | [Alt text](https://www.github.com/lachibal2/Diagnosing-Pink-Eye-With-CNNs/img/pink_eye.jpg)
+<img src='https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs/blob/master/img/regular_eye.jpg' width=200 height=200> | <img src='https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs/blob/master/img/pink_eye.jpg' width=200 height=200>
 
 It is easy for us to tell which one has pink eye, and which one does not. The computer, at first, has a little bit of trouble. We must train it to asscosiate certain features of the face(i.e. swollen eyes, red-colored eye, etc.) with pink eye. Simmilar to how we learn, the computer gets better as it sees more examples of pink eye.
 
@@ -89,7 +109,7 @@ Each has their own advantages and disadvantages.
 During training, the biases are adjusted by a process called backpropogation.
 
 ### Backpropagation:
-Invented by Wilfred Hinton, backpropagation, or backprop for short, is a method of finding the difference between the returned result and the expected result and subtly adjusting biases of nodes that contributed to the gap in expected and returned results.
+Invented by Geoffery Hinton, backpropagation, or backprop for short, is a method of finding the difference between the returned result and the expected result and subtly adjusting biases of nodes that contributed to the gap in expected and returned results.
 
 ### Gradient Descent:
 To minimize empirical loss, we want to use a gradient descent optimizer. Empirical loss can be thought of as an approximation for how close the predicted result is to the actual result. We want to minimize this quantity. So, we take a step of some magnitude in a random direction, and we measure the descent or ascent. If we're going up, we want to go the other way. Otherwise, keep going down. The procedure that was just described is a very simple gradient descent algorithm.
@@ -99,7 +119,11 @@ There are many gradient descent algorithms, the most popular of which include: M
 The size of the magnitude of the step we took is called the learning rate. The learning rate is important, because if it is set too high or too low, it can get the program stuck in a local minimum for the value of the empirical loss, rather than a global optimum.
 
 ### Neural Nets:
-Neural Nets are called the way they are, because they mimic the human brain, *neural*, and when put in graphical notation, the center appears as though it is a net. [Alt text](/img/neural-net) Neural Nets are a just a large collections of perceptrons. Neural Nets have three main types of layers:
+Neural Nets are called the way they are, because they mimic the human brain, *neural*, and net is short for network. The network in a neural net is a series of perceptrons linked together.
+
+![Alt text](https://github.com/lachibal2/diagnosing-pink-eye-with-CNNs/blob/master/img/neural_net.jpg) 
+
+Neural Nets are a just a large collections of perceptrons. Neural Nets have three main types of layers:
 
 1. input layers: the input data,
 
