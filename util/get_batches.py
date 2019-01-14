@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from change_to_array import changeToArray
+import change_to_array
 
 def createData(image_size=128):
     print('Loading Data. . .', end='   ')
@@ -19,12 +19,12 @@ def createData(image_size=128):
     os.chdir('.\\changed_images')
     for image in range(len(array)):
         try:
-            current = changeToArray(array[image], image)
+            current = change_to_array.changeToArray(array[image], image)
             if len(current) == image_size:
                 images.append(current)
             else:
                 not_suitable += 1
-        except OSError or FileNotFoundError:
+        except (OSError, FileNotFoundError) as e:
             not_suitable += 1
 
     os.chdir(originalPath)
@@ -39,8 +39,8 @@ def createData(image_size=128):
 def getBatches(imageArray, batch_size, input_size, output_size, image_size=128):
     randomIndices = np.random.randint(len(imageArray), size=batch_size)
     x = np.zeros((batch_size, image_size, input_size))
-    print(x.size)
     y = np.zeros((batch_size, output_size))
+
     for i in range(batch_size):
         currentIndex = randomIndices[i]
         x[i] = imageArray[currentIndex]
