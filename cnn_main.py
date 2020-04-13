@@ -18,12 +18,12 @@ file_names = arguments.name.split(',') #parsing file names
 """
 file_names = ['test1.jpg', 'test2.jpg']
 
-class MisingTrainingDataError(Exception): #new error for missing training data
-    def __init__(self):
-        Exception.__init__('Missing Folder: "training images"')
+class MissingTrainingDataError(Exception): #new error for missing training data
+    def __init__(self, arg):
+        self.strerror = arg
 
 if 'training images' not in os.listdir():
-    raise MissingTrainingDataError
+    raise MissingTrainingDataError("Missing the 'training images' directory, please create it as a placeholder")
 
 #Import DATA
 imageList = createData()

@@ -1,25 +1,28 @@
 import numpy as np
 import os
-import change_to_array
+from .change_to_array import changeToArray
 
 def createData(image_size=128):
     print('Loading Data. . .', end='   ')
     
     originalPath = os.getcwd()
-    os.chdir('..\\training images')
+    os.chdir('../training images')
     
     array = os.listdir()
-    array.pop()#remove last element, the folder 'changed_images'
+    array.pop() #remove last element, the folder 'changed_images'
 
     images = []
     not_suitable = 0
     
     if 'changed_images' not in os.listdir():
         os.mkdir('.\\changed_images')
+    
     os.chdir('.\\changed_images')
+    
     for image in range(len(array)):
+        #need to add an eye haar cascade to detect it and center it in the image
         try:
-            current = change_to_array.changeToArray(array[image], image)
+            current = changeToArray(array[image], image)
             if len(current) == image_size:
                 images.append(current)
             else:
