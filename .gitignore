@@ -1,0 +1,4 @@
+/training images/
+*.pyc
+/util/__pycache__/
+/util/__init__.py
