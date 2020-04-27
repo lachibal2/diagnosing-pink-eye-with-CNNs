@@ -6,27 +6,44 @@ def createData(image_size=128):
     print('Loading Data. . .', end='   ')
     
     originalPath = os.getcwd()
-    os.chdir('../training images')
-    
-    array = os.listdir()
-    array.pop() #remove last element, the folder 'changed_images'
+    os.chdir(originalPath + '\\training images')
 
     images = []
+    labels = []
     not_suitable = 0
     
-    if 'changed_images' not in os.listdir():
-        os.mkdir('.\\changed_images')
+    #tries to create the directory, if it does not exist
+    try:
+        os.mkdir(originalPath + '\\changed_images')
+
+    except FileExistsError as e:
+        pass
+
+    array = os.listdir()
     
-    os.chdir('.\\changed_images')
+    os.chdir(originalPath + '\\training images')
     
     for image in range(len(array)):
-        #need to add an eye haar cascade to detect it and center it in the image
+
         try:
             current = changeToArray(array[image], image)
+            
             if len(current) == image_size:
                 images.append(current)
+                
+                if '_P_' in array[image]:
+                    labels.append(1)
+
+                elif '_NP_' in array[image]:
+                    labels.append(0)
+
+                else:
+                    not_suitable += 1
+                    images.pop()
+            
             else:
                 not_suitable += 1
+
         except (OSError, FileNotFoundError) as e:
             not_suitable += 1
 
@@ -37,7 +54,7 @@ def createData(image_size=128):
     print('{} images accepted'.format(len(images)))
     print('{} images were not suitable'.format(not_suitable))
 
-    return images
+    return {"images":images, "labels": labels}
 
 def getBatches(imageArray, batch_size, input_size, output_size, image_size=128):
     randomIndices = np.random.randint(len(imageArray), size=batch_size)

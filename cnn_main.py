@@ -1,8 +1,13 @@
 #Dependancies:
-import tensorflow as tf
+#import tensorflow as tf
 import numpy as np
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # will only output errors from the log
+import tensorflow as tf
 import argparse
+
+#from tensorflow import keras
+from keras import models, layers, losses
 
 from util.print_progress import print_progress, showLossGraph
 from util.change_to_array import changeToArray
@@ -15,9 +20,9 @@ p.add_argument('-n', '--name', required=True, help='name of file in "to_diagnose
 arguments = p.parse_args()
 
 file_names = arguments.name.split(',') #parsing file names
-"""
-file_names = ['test1.jpg', 'test2.jpg']
 
+file_names = ['test1.jpg', 'test2.jpg'] #TEMPORARY
+"""
 class MissingTrainingDataError(Exception): #new error for missing training data
     def __init__(self, arg):
         self.strerror = arg
@@ -26,91 +31,60 @@ if 'training images' not in os.listdir():
     raise MissingTrainingDataError("Missing the 'training images' directory, please create it as a placeholder")
 
 #Import DATA
-imageList = createData()
-
-#training parameters:
-image_size = 128
-
-learning_rate = 0.001
-num_steps = 200
-batch_size = 20
-display_step = 10
-
-num_input = 128 ** 2 #128x128 images are taken in by the cnn
-num_classes = 2 #pink eye, or not pink eye
-dropout = 0.75 #dropout probability
-
-x = tf.placeholder(tf.float32, [None, num_input])
-y = tf.placeholder(tf.float32, [None, num_classes])
-keep_prob = tf.placeholder(tf.float32) #dropout probability
-
-#Wrappers
-def conv2d(x, W, b, strides=1):
-    x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding="SAME")
-    x = tf.nn.bias_add(x,b)
-    return tf.nn.relu(x) #relu activation function
+data = createData()
+imageList = data['images']
+labelsList = data['labels']
 
 
-def maxpool2d(x, k=2):
-    return tf.nn.max_pool(x, ksize=[1,k,k,1], strides=[1,k,k,1], padding="SAME")
+image_size = 128 #edit this to change size of images used
 
-#main
-def CNN(x, weights, biases, dropout):
-    x = tf.reshape(x, shape=[-1,128,128,1])
-    conv1 = conv2d(x, weights['wc1'], biases['bc1'])
-    conv1 = maxpool2d(conv1, k=2)
-    conv2 = conv2d(conv1, weights['wc2'], biases['bc2'])
-    conv2 = maxpool2d(conv2, k=2)
+#creating model
+model = models.Sequential()
 
-    fc1 = tf.reshape(conv2, [-1, weights['wd1'].get_shape().as_list()[0]])
-    fc1 = tf.add(tf.matmul(fc1, weights['wd1']), biases['bd1'])
-    fc1 = tf.nn.relu(fc1)
+model.add(layers.Conv2D(image_size, (3, 3), activation='relu', input_shape=(image_size, image_size, 3)))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(image_size * 2, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(image_size * 2, (3, 3), activation='relu'))
+model.add(layers.Flatten())
+model.add(layers.Dense(image_size * 2, activation='relu'))
+model.add(layers.Dense(1))
 
-    fc1 = tf.nn.dropout(fc1, dropout)
-    return tf.add(tf.matmul(fc1, weights['out']), biases['out'])
+#compiling and evaluating model
+model.compile(optimizer='adam',
+              loss = losses.BinaryCrossentropy(),
+              metrics=['accuracy'])
 
-weights = {
-    'wc1': tf.Variable(tf.random_normal([5,5,1,32])),
-    'wc2': tf.Variable(tf.random_normal([5,5,32,64])),
-    'wd1': tf.Variable(tf.random_normal([7*7*64,1024])),
-    'out': tf.Variable(tf.random_normal([1024, num_classes]))
-}
 
-biases = {
-    'bc1': tf.Variable(tf.random_normal([32])),
-    'bc2': tf.Variable(tf.random_normal([64])),
-    'bd1': tf.Variable(tf.random_normal([1024])),
-    'out': tf.Variable(tf.random_normal([num_classes]))
-}
+train_images = [imageList[:round(0.75*(len(imageList)-1))]]
+train_labels = [labelsList[:round(0.75*(len(labelsList)-1))]]
 
-logits = CNN(x, weights, biases, keep_prob)
-prediction = tf.nn.softmax(logits)
+test_images = [imageList[round(0.75*(len(imageList)-1)):len(imageList)]]
+test_labels = [labelsList[round(0.75*(len(labelsList)-1)):len(labelsList)]]
 
-loss_op = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y))
-optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate) #TODO: experiment with optemizers
-train_op = optimizer.minimize(loss_op)
+history = model.fit(train_images, train_labels, epochs=10, 
+                    validation_data=(test_images, test_labels))
 
-correct_pred = tf.equal(tf.argmax(prediction, 1), tf.argmax(y,1))
-accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+print("Optimization is done!")
+showLossGraph(history.history['loss'])
 
-init = tf.global_variables_initializer()
+redir = os.getcwd()
+os.chdir('./to_diagnose')
+n = 0
 
-loss_list = []
-with tf.Session as sess:
-    sess.run(init)
+for i in os.listdir():
+    if i != 'README.md':
+        cur_image_array = [changeToArray(i, n)]
 
-    for i in range(1, num_steps + 1):
-        batch_x, batch_y = getBatches(imageList, batch_size, num_input, num_classes, image_size=image_size)#TODO: make batches
-        sess.run(train_op, feed_dict={X: batch_x, Y: batch_y, keep_prob: 0.8})
-        if i % display_step == 0 or step == 1:
-            loss, acc = sess.run([loss_op, accuracy], feed_dict={X: batch_x, Y: batch_y, keep_prob: 1.0})
-            loss_list.append(loss)
-            print_progress(i, loss, acc, num_steps + 1)
-    print('Optimization is done!')
+        if len(cur_image_array[0]) == image_size:
+            prediction = model.predict_classes([cur_image_array])
+
+            str_pred = "have pink eye" if prediction == 1 else "not have pink eye"
+            print("Image '{}' is predicted to {}".format(i, str_pred))
+
+        else:
+            print("Image '{}' is not an acceptable size".format(i))
     
-    for i in range(len(file_names)):
-        current_file = changeToArray(file_names[i], i)
-        result = sess.run(accuracy, feed_dict={X: 'TODO',Y: 'TODO',keep_prob: 1.0})
-        print("Image '" + file_names[i] + "' has a {}% chance of having pink-eye".format(result))
+    n += 1
 
-    showLossGraph(loss_list, num_steps)
+os.chdir(redir)

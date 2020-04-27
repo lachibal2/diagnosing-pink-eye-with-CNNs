@@ -12,10 +12,11 @@ def print_progress(epoch, loss, accuracy, totalEpochs):
         )
     print('================')
 
-def showLossGraph(lossList, numEpochs, label='Loss'):
+def showLossGraph(lossList, label='Loss'):
+    numEpochs = len(lossList)
     xList = range(1, numEpochs + 1)
     plot.scatter(xList, lossList)
-    plot.title('Loss as a function of time')
+    plot.title('Loss as a function of epoch number')
     plot.xlabel('Epoch Number')
     plot.ylabel(label)
     plot.show()

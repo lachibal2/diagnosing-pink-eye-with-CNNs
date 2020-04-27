@@ -1,8 +1,6 @@
 # Diagnosing Pink Eye using Convolutional Neural Networks
 Using Convolutional Neural Networks to diagnose conjunctivitis, or pink eye
 
-Please note, this repo is still a work-in-progress, and is in no way fully operational.
-
 **By: Lachi Balabanski**
 
 ## Table of Contents:
@@ -62,15 +60,11 @@ If it was succesful, the training should display something along the lines of:
 
 ```text
 Loading Data. . .   [DONE]
-100 images accepted
+10 images accepted
 0 images were not suitable
-================
-Epoch: 1, Loss: 0.9908674, Accuracy: 0.119856
-3% finshed
-================
-Epoch: 20, Loss: 0.778223, Accuracy: 0.213785
-61% finished
-===============
+Train on X samples, validate on X samples
+Epoch 1/10
+X/X [==============================] - 2s 312ms/step - loss: 2.7079 - accuracy: 0.0000e+00 - val_loss: 15.2492 - val_accuracy: 0.0000e+00
 ```
 
 Eventually the program should output:
